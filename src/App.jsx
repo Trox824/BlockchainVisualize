@@ -1,4 +1,4 @@
-import Flow from "./components/Flow";
+import { MultiDirectedGraphView } from "./components/LoadGraph";
 import Search from "./components/Search";
 
 const App = () => {
@@ -80,8 +80,8 @@ const App = () => {
       </div>
       <div className="divider"></div>
       <div className="grid h-auto card rounded-xl place-items-center bg-base-200 shadow-xl my-4">
-        <div className="p-4 w-full">
-          <Flow />
+        <div className="w-full h-96 p-4">
+          <MultiDirectedGraphView />
         </div>
       </div>
       <footer class="footer items-center p-4 bg-base-200 text-base-content rounded-xl my-4">
