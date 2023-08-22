@@ -1,38 +1,22 @@
-import FA2Graph from "./components/LoadGraph";
 import NavBar from "./components/NavBar";
-import InfoTable from "./components/InfoTable";
 import Footer from "./components/Footer";
+import Home from "./components/Home";
+import InfoTable from "./components/InfoTable";
+import { Route, Routes } from "react-router-dom";
+import About from "./components/About";
 const App = () => {
   return (
     <div className="container mx-auto ">
       <NavBar />
-
-      <div className="collapse collapse-arrow bg-base-200 sm:w-1/2  my-7 mx-auto w-full rounded-xl shadow-xl">
-        <input type="checkbox" />
-        <div className="collapse-title text-xl font-medium">
-          Information Table
-        </div>
-        <div className="collapse-content ">
-          <InfoTable />
-        </div>
-      </div>
-
-      <div className="divider"></div>
-      <div
-        className="collapse grid card rounded-xl bg-base-200 shadow-xl my-4"
-        style={{ height: 700 }}
-      >
-        <input type="checkbox" checked="checked" />
-        <div className="collapse-title text-xl font-medium">
-          Wallet ID: 213nnasd12xvzxn123
-        </div>
-        <div className="collapse-content w-full">
-          <div className="w-full h-full p-2">
-            <FA2Graph />
-          </div>
-        </div>
-      </div>
-
+      <Routes>
+        {/* <Route path="/" element={<Home />}></Route>
+          <Route index element={<Home />} /></Route>
+          <Route path="./components/InfoTable" element={<InfoTable />} /></Route> */}
+        <Route index element={<Home />}></Route>
+        <Route path="/Home" element={<Home />}></Route>
+        <Route path="/InfoTable" element={<InfoTable />}></Route>
+        <Route path="/About" element={<About />}></Route>
+      </Routes>
       <Footer />
       <div class="h-0.5"></div>
     </div>

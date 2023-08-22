@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import Search from "./Search";
+
 const NavBar = () => {
   return (
     <div className="navbar bg-base-200 shadow-xl rounded-xl my-4">
@@ -25,13 +27,13 @@ const NavBar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <a>Homepage</a>
+              <Link to="/Home">Homepage</Link>
             </li>
             <li>
-              <a>Transaction</a>
+              <Link to="/InfoTable">Transaction</Link>
             </li>
             <li>
-              <a>About</a>
+              <Link to="/About">About</Link>
             </li>
           </ul>
         </div>
