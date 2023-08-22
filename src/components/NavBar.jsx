@@ -35,7 +35,6 @@ const NavBar = () => {
             </li>
           </ul>
         </div>
-        <input type="checkbox" className="toggle" checked />
       </div>
       <div className="navbar-center">
         <a className="btn btn-ghost normal-case text-xl">Group 3-7</a>

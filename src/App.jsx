@@ -1,4 +1,4 @@
-import { LoadGraph } from "./components/LoadGraph";
+import FA2Graph from "./components/LoadGraph";
 import NavBar from "./components/NavBar";
 import InfoTable from "./components/InfoTable";
 import Footer from "./components/Footer";
@@ -28,7 +28,7 @@ const App = () => {
         </div>
         <div className="collapse-content w-full">
           <div className="w-full h-full p-2">
-            <LoadGraph />
+            <FA2Graph />
           </div>
         </div>
       </div>

@@ -1,37 +1,74 @@
-import React, { FC, useEffect } from "react";
-
-import Graph from "graphology";
-import "@react-sigma/core/lib/react-sigma.min.css";
+import React, { useEffect, useState } from "react";
+import "../style.css";
 import {
   SigmaContainer,
+  useSigma,
+  useLoadGraph,
   ControlsContainer,
   ZoomControl,
-  SearchControl,
   FullScreenControl,
-  useSigma,
-  useRegisterEvents,
 } from "@react-sigma/core";
-import { LayoutForceAtlas2Control } from "@react-sigma/layout-forceatlas2";
-export const LoadGraph = () => {
+import { useLayoutCircular } from "@react-sigma/layout-circular";
+import {
+  useWorkerLayoutForceAtlas2,
+  LayoutForceAtlas2Control,
+} from "@react-sigma/layout-forceatlas2";
+
+import { uniqueId } from "lodash";
+
+import "@react-sigma/core/lib/react-sigma.min.css";
+
+import Graph from "graphology";
+
+const GraphDefault = () => {
+  const sigma = useSigma();
+  const { positions, assign } = useLayoutCircular();
+  const loadGraph = useLoadGraph();
   const graph = new Graph();
 
-  graph.addNode("A", { x: 0, y: 0, label: "Node A", size: 15 });
-  graph.addNode("B", { x: 5, y: 1, label: "Node B", size: 15 });
-  graph.addNode("C", { x: 5, y: 2, label: "Node C", size: 15 });
-  graph.addNode("D", { x: 5, y: 3, label: "Node D", size: 15 });
-  graph.addNode("E", { x: 5, y: -1, label: "Node E", size: 15 });
-  graph.addNode("F", { x: 5, y: -2, label: "Node F", size: 15 });
-  graph.addNode("G", { x: 5, y: -3, label: "Node G", size: 15 });
+  useEffect(() => {
+    graph.addNode(uniqueId(), {
+      x: 0,
+      y: 0,
+      label: uniqueId(),
+      color: "#123456",
+      size: 20,
+    });
+    loadGraph(graph);
+    assign();
+    console.log(positions());
+  }, [assign, loadGraph, graph]);
+
+  return null;
+};
+
+export const FA2Graph = () => {
+  const Fa2 = () => {
+    const { start, kill } = useWorkerLayoutForceAtlas2({
+      settings: { slowDown: 10 },
+    });
+
+    useEffect(() => {
+      start();
+      return () => {
+        kill();
+      };
+    }, [start, kill]);
+
+    return null;
+  };
 
   return (
-    <SigmaContainer
-      className="rounded-xl h-full w-full flex justify-center items-center flex-col"
-      graph={graph}
-    >
-      <ControlsContainer className="" position={"bottom-right"}>
-        <ZoomControl className="flex items-center justify-center" />
+    <SigmaContainer className="rounded-xl">
+      <GraphDefault />
+      <Fa2 />
+      <ControlsContainer position={"bottom-right"}>
+        <ZoomControl />
         <FullScreenControl />
+        <LayoutForceAtlas2Control settings={{ settings: { slowDown: 10 } }} />
       </ControlsContainer>
     </SigmaContainer>
   );
 };
+
+export default FA2Graph;
