@@ -1,5 +1,5 @@
 .react-sigma-controls {
-  @apply rounded-box border-0 bg-base-100 h-40 shadow-xl m-2 transition-all duration-300 hover:scale-110 hover:m-3 z-10;
+  @apply rounded-box bg-base-100 h-fit transition-all duration-300 p-2 !important;
 }
 
 .react-sigma-controls:last-child {
@@ -7,11 +7,13 @@
 }
 
 .react-sigma-control {
-  @apply rounded-box btn btn-sm btn-square btn-ghost block p-0 flex justify-center !important;
+  @apply rounded-box block p-0 flex justify-center border-0 !important;
   color: hsl(var(--bc) / var(--tw-text-opacity, 1)) !important;
 }
 
 .react-sigma-control button {
   @apply bg-transparent flex items-center justify-center w-full rounded-box;
-  cursor: pointer;
+}
+.react-sigma-control svg {
+  display: inline;
 }

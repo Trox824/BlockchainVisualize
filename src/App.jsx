@@ -18,7 +18,6 @@ const App = () => {
         <Route path="/About" element={<About />}></Route>
       </Routes>
       <Footer />
-      <div class="h-0.5"></div>
     </div>
   );
 };
