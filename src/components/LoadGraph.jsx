@@ -7,6 +7,7 @@ import {
   ControlsContainer,
   ZoomControl,
   FullScreenControl,
+  useRegisterEvents,
 } from "@react-sigma/core";
 import { useLayoutCircular } from "@react-sigma/layout-circular";
 import {
@@ -19,26 +20,6 @@ import { uniqueId } from "lodash";
 import "@react-sigma/core/lib/react-sigma.min.css";
 import Graph from "graphology";
 
-const Node_1 = {
-  address: "TWKeF4kETmaa6jHr3sX3bt2iRp9aitX9mJ",
-  To_address: 7,
-  from_address: 123,
-  current_balance: 185,
-  Transactions: 1129,
-  Maximum_txn_amount: 330000,
-  Total_received: 4794991.1506,
-  Total_sent: 4794806.1506,
-};
-const Node_2 = {
-  address: "TCGkiziszuaVxK3KpNRT7ZjgazMy2qCpfj",
-  To_address: 12,
-  from_address: 502,
-  current_balance: 185,
-  Transactions: 1129,
-  Maximum_txn_amount: 330000,
-  Total_received: 4794991.1506,
-  Total_sent: 4794806.1506,
-};
 const colorPalette = [
   "#3F2021", // DARK BROWN
   "#B04A5A", // DEEP CARMINE PINK
@@ -47,32 +28,41 @@ const colorPalette = [
   "#7FA0AC", // BLUE GRAY
   "#EEE5D3", // ISABELLINE
 ];
+
+const truncateLabel = (label) => {
+  return (
+    label.substring(0, 4) +
+    "..." +
+    label.substring(label.length - 4, label.length)
+  );
+};
+
 const GraphDefault = () => {
   const sigma = useSigma();
   const { positions, assign } = useLayoutCircular();
   const loadGraph = useLoadGraph();
-  const graph = new Graph();
 
   useEffect(() => {
+    const graph = new Graph();
     const order = 50;
     const probability = 0.1;
- 
+
     // Create the graph
     const nodeIds = []; // Store generated node IDs
 
     for (let i = 0; i < order; i++) {
       const node_id = uniqueId();
       graph.addNode(node_id, {
-        label: "asdasdasdas",
+        label: "TWKeF4kETmaa6jHr3sX3bt2iRp9aitX9mJ",
         size: 10,
         color: colorPalette[Math.floor(Math.random() * colorPalette.length)],
         x: 0,
         y: 0,
       });
-      nodeIds.push(node_id); // Store the generated node ID
+      nodeIds.push(node_id);
+       // Store the generated node ID
     }
 
-    // Create directed edges between nodes using their IDs
     for (let i = 0; i < order; i++) {
       for (let j = i + 1; j < order; j++) {
         if (Math.random() < probability)
@@ -84,11 +74,30 @@ const GraphDefault = () => {
     loadGraph(graph);
     assign();
     console.log(positions());
-  }, [assign, loadGraph, graph]);
- 
+  }, []);
+
   return null;
 };
 
+const GraphEvents = () => {
+  const registerEvents = useRegisterEvents();
+  const sigma = useSigma();
+  const [draggedNode, setDraggedNode] = useState(null);
+  
+  useEffect(() => {
+    // Register the events
+    registerEvents({
+      enterNode: (event) => {
+        const pos = sigma.viewportToGraph(event);
+        sigma.getGraph().setNodeAttribute(event.node, "label", truncateLabel(pos.label));
+        sigma.getGraph()
+      },
+      leaveNode: (event) => console.log("leaveNode", event.node),
+    });
+  }, [registerEvents, sigma, draggedNode]);
+
+  return null;
+};
 export const FA2Graph = () => {
   const Fa2 = () => {
     const { start, kill } = useWorkerLayoutForceAtlas2({
@@ -96,8 +105,10 @@ export const FA2Graph = () => {
     });
 
     useEffect(() => {
+      // start FA2
       start();
       return () => {
+        // Kill FA2 on unmount
         kill();
       };
     }, [start, kill]);
@@ -108,7 +119,7 @@ export const FA2Graph = () => {
   return (
     <SigmaContainer className="relative w-full h-full bg-white rounded-xl">
       <GraphDefault />
-      <Fa2 />
+      <GraphEvents />
       <ControlsContainer position={"bottom-right"}>
         <ZoomControl />
         <FullScreenControl />
