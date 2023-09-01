@@ -36,7 +36,7 @@ const Search = () => {
         <input
           type="text"
           placeholder="Search"
-          class="input input-bordered w-24 md:w-auto rounded-3xl "
+          className="input input-bordered w-24 md:w-auto rounded-3xl "
         />
       </Transition>
     </>
