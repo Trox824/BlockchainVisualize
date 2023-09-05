@@ -1,26 +1,40 @@
+import React from "react";
 import AgePic from "./age.jpg";
 import { Link } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll"; // Import the ScrollLink component
+import { animateScroll as scroll } from "react-scroll"; // Import the scroll function for smooth scrolling
+
 const About = () => {
+  const scrollToGraph = () => {
+    // Use the scroll function to scroll to the graph section
+    scroll.scrollTo("graph-section", {
+      duration: 800, // Scroll duration in milliseconds
+      smooth: "easeInOutQuart", // Scroll animation type
+    });
+  };
+
   return (
     <div>
-      <div className="hero min-h-screen bg-base-200 shadow-xl rounded-xl mt-10">
+      <div className=" hero h-500 2xl:h-700 bg-base-200 shadow-xl rounded-xl mt-10 my-10">
         <div className="hero-content flex-col lg:flex-row">
-          <img src={AgePic} className="max-w-sm rounded-lg shadow-2xl" />
-          <div>
-            <h1 className="text-5xl font-bold">Pham Tien Son</h1>
+          <img
+            src={AgePic}
+            className="scale-80 2xl:scale-150 max-w-sm 2xl:mr-16"
+          />
+          <div className="ml-1 xl:ml-10">
+            <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold">
+              Compliance analysis tools
+            </h1>
             <p className="py-6 text-lg">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis
-              enim, fuga sed quod iusto provident ipsa cum similique aperiam
-              porro debitis voluptatem ipsam, soluta alias, ab sint quaerat
-              molestias et! Lorem ipsum dolor sit amet consectetur adipisicing
-              elit. Quod aliquam distinctio laudantium, iure nemo delectus iste
-              reiciendis nobis ullam perferendis animi exercitationem quisquam,
-              placeat, dolore id dignissimos rerum. Sunt, non!
+              Easy-to-use yet powerful, compliance analysis tools make
+              investigations hassle-free. The collection of tools support
+              functions including one-click address mining, transaction graph
+              display, NFT traceability, and data visualization.
             </p>
 
-            <button className="btn btn-primary">
-              <Link to="/Home">Start</Link>
-            </button>
+            <ScrollLink to="graph-section" smooth={true} duration={800}>
+              <button className="btn btn-primary">Upgrade to Pro !</button>
+            </ScrollLink>
           </div>
         </div>
       </div>

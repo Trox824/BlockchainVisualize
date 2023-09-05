@@ -30,9 +30,6 @@ const NavBar = () => {
               <Link to="/Home">Homepage</Link>
             </li>
             <li>
-              <Link to="/InfoTable">Transaction</Link>
-            </li>
-            <li>
               <Link to="/About">About</Link>
             </li>
           </ul>
@@ -41,9 +38,7 @@ const NavBar = () => {
       <div className="navbar-center">
         <a className="btn btn-ghost normal-case text-xl">Group 3-7</a>
       </div>
-      <div className="navbar-end">
-        <Search />
-      </div>
+      <div className="navbar-end">{/* change theme */}</div>
     </div>
   );
 };

@@ -1,14 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useSigma, useRegisterEvents } from "@react-sigma/core";
 import "@react-sigma/core/lib/react-sigma.min.css";
+import {
+  NodeContext,
+  NodeContextProvider,
+  UseNodeContext,
+} from "../Address/NodeContext";
 export const GraphEvent = () => {
   const registerEvents = useRegisterEvents();
   const sigma = useSigma();
   const [draggedNode, setDraggedNode] = useState(null);
-
+  const { NodeID, SetNodeID } = UseNodeContext();
+  const { ShowAddress, SetShowAddress } = UseNodeContext();
   useEffect(() => {
     // Register the events
     registerEvents({
+      clickNode: (event) => {
+        SetNodeID(
+          sigma.getGraph().getNodeAttribute(event.node, "truncated_label")
+        );
+        SetShowAddress(true);
+      },
       downNode: (e) => {
         setDraggedNode(e.node);
         sigma.getGraph().setNodeAttribute(e.node, "highlighted", true);
@@ -55,6 +67,9 @@ export const GraphEvent = () => {
           e.original.preventDefault();
           e.original.stopPropagation();
         }
+      },
+      clickEdge: (event) => {
+        SetShowAddress(false);
       },
     });
   }, [registerEvents, sigma, draggedNode]);

@@ -11,9 +11,14 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.16",
+    "@nextui-org/button": "^2.0.16",
+    "@nextui-org/react": "^2.1.8",
+    "@nextui-org/system": "^2.0.6",
+    "@nextui-org/theme": "^2.1.4",
     "@react-sigma/core": "^3.4.2",
     "@react-sigma/layout-circular": "^3.4.2",
     "@react-sigma/layout-forceatlas2": "^3.4.2",
+    "framer-motion": "^10.16.2",
     "graphology": "^0.25.4",
     "graphology-types": "^0.24.7",
     "lodash": "^4.17.21",
@@ -21,6 +26,7 @@
     "react-dom": "^18.2.0",
     "react-flow-renderer": "^10.3.17",
     "react-router-dom": "^6.15.0",
+    "react-scroll": "^1.8.9",
     "reactflow": "^11.8.2"
   },
   "devDependencies": {

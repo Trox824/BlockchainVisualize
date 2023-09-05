@@ -8,8 +8,7 @@ import {
 import { useLayoutCircular } from "@react-sigma/layout-circular";
 import "@react-sigma/core/lib/react-sigma.min.css";
 import Graph from "graphology";
-import { SwapLabel } from "./SwapLabel";
-import { uniqueId } from "lodash";
+import { random, uniqueId } from "lodash";
 import { truncateLabel } from "./truncateLabel";
 const colorPalette = [
   "#3F2021", // DARK BROWN
@@ -18,6 +17,14 @@ const colorPalette = [
   "#CB9576", // COPPER RUST
   "#7FA0AC", // BLUE GRAY
   "#EEE5D3", // ISABELLINE
+];
+const NodeIDRandom = [
+  "TWKeF4kETmaa6jHr3sX3bt2iRp9aitX9mJ", // DARK BROWN
+  "TF9V71Ki1mw7gbiZGs5Zhi1AwASsMqC6xm", // DEEP CARMINE PINK
+  "TV6MuMXfmLbBqPZvBHdwFsDnQeVfnmiuSi", // COPPER RUST
+  "TYASr5UV6HEcXatwdFQfmLVUqQQQMUxHLS", // COPPER RUST
+  "TQrY8tryqsYVCYS3MFbtffiPp2ccyn4STm", // BLUE GRAY
+  "TEZyqNsTSrEdwfqQSaBLYppYWSdVdNSqZ8", // ISABELLINE
 ];
 
 export const GraphDefault = () => {
@@ -37,10 +44,12 @@ export const GraphDefault = () => {
 
     for (let i = 0; i < order; i++) {
       const node_id = uniqueId();
+      const random_label =
+        NodeIDRandom[Math.floor(Math.random() * colorPalette.length)];
       graph.addNode(node_id, {
-        truncated_label: "TWKeF4kETmaa6jHr3sX3bt2iRp9aitX9mJ",
-        label: truncateLabel("TWKeF4kETmaa6jHr3sX3bt2iRp9aitX9mJ"),
-        size: 15,
+        truncated_label: random_label,
+        label: truncateLabel(random_label),
+        size: 10,
         color: colorPalette[Math.floor(Math.random() * colorPalette.length)],
         x: 0,
         y: 0,
@@ -79,7 +88,7 @@ export const GraphDefault = () => {
             newData.highlighted = true;
 
             newData.label = newData.truncated_label;
-            newData.size = 15;
+            newData.size = 8;
           } else {
             newData.color = "#E2E2E2";
             newData.highlighted = false;

@@ -1,45 +1,75 @@
+import {
+  Card,
+  CardBody,
+  Input,
+  Listbox,
+  ListboxItem,
+  Select,
+  SelectItem,
+} from "@nextui-org/react";
 import { useState } from "react";
-import { Transition } from "@headlessui/react";
+import { Link } from "react-router-dom";
 
 const Search = () => {
-  const [isShowing, setIsShowing] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const [searchFocus, setSearchFocus] = useState(false);
+
   return (
-    <>
-      <button
-        className="btn btn-ghost btn-circle"
-        onClick={() => setIsShowing((isShowing) => !isShowing)}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
-      </button>
-      <Transition
-        show={isShowing}
-        enter="transition-opacity duration-75"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="transition-opacity duration-150"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
-        <input
-          type="text"
-          placeholder="Search"
-          className="input input-bordered w-24 md:w-auto rounded-3xl "
+    <div
+      onFocus={() => setSearchFocus(true)}
+      onBlur={() => setSearchFocus(false)}
+    >
+      <div className="grid grid-cols-12 justify-between gap-2 gap-x-4 gap-y-2">
+        <Select label="Filter" className="col-span-12 sm:col-span-4" size="md">
+          <SelectItem key={1} value={1}>
+            Address
+          </SelectItem>
+          <SelectItem key={2} value={1}>
+            Transaction
+          </SelectItem>
+          <SelectItem key={3} value={1}>
+            NFT
+          </SelectItem>
+        </Select>
+        <Input
+          size="md"
+          className="col-span-12 sm:col-span-8"
+          radius="md"
+          label={`Search by address/txn`}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-      </Transition>
-    </>
+      </div>
+      <div className="flex justify-center relative">
+        <Card
+          className={`z-50 w-full absolute mt-2 transition-[height] duration-150 ease-in-out ${
+            search.length > 0 && searchFocus ? "h-auto max-h-40" : "h-0"
+          }`}
+        >
+          <CardBody className="p-1">
+            <Listbox aria-label="Results">
+              {Array(search.length)
+                .fill()
+                .map((index) => {
+                  return (
+                    <ListboxItem
+                      key={index}
+                      onClick={() => {
+                        onOpen();
+                      }}
+                    >
+                      <Link to="/address/0xafe7e3264efca320af481af3408d6f348878ec88">
+                        0xafe7e3264efca320af481af3408d6f348878ec88
+                      </Link>
+                    </ListboxItem>
+                  );
+                })}
+            </Listbox>
+          </CardBody>
+        </Card>
+      </div>
+    </div>
   );
 };
 
