@@ -3,7 +3,7 @@ import Footer from "./components/Footer";
 import Home from "./Pages/Home/Home";
 import { Route, Routes } from "react-router-dom";
 import About from "./Pages/About/About";
-import { NodeContext, NodeContextProvider } from "./Pages/Address/NodeContext";
+import { NodeContext, NodeContextProvider } from "./Pages/Address/GraphContext";
 const App = () => {
   return (
     <NodeContextProvider>

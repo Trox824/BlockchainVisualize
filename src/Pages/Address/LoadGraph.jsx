@@ -19,7 +19,7 @@ import {
   NodeContext,
   NodeContextProvider,
   UseNodeContext,
-} from "../Address/NodeContext";
+} from "../Address/GraphContext";
 const colorPalette = [
   "#3F2021", // DARK BROWN
   "#B04A5A", // DEEP CARMINE PINK

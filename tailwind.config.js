@@ -9,7 +9,7 @@ module.exports = {
   theme: {
     extend: {
       height: {
-        700: "700px",
+        700: "730px",
         900: "500px",
         1200: "1200px",
       },

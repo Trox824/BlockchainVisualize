@@ -5,7 +5,7 @@ import {
   NodeContext,
   NodeContextProvider,
   UseNodeContext,
-} from "../Address/NodeContext";
+} from "../Address/GraphContext";
 export const GraphEvent = () => {
   const registerEvents = useRegisterEvents();
   const sigma = useSigma();
@@ -16,9 +16,10 @@ export const GraphEvent = () => {
     // Register the events
     registerEvents({
       clickNode: (event) => {
-        SetNodeID(
-          sigma.getGraph().getNodeAttribute(event.node, "truncated_label")
-        );
+        SetNodeID([
+          sigma.getGraph().getNodeAttribute(event.node, "truncated_label"),
+          sigma.getGraph().getNodeAttribute(event.node, "nodeType"),
+        ]);
         SetShowAddress(true);
       },
       downNode: (e) => {

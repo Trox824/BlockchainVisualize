@@ -2,7 +2,10 @@ import NodeTable from "../Address/NodeTable";
 import { FA2Graph } from "../Address/LoadGraph";
 import Search from "../../components/Search";
 import About from "../About/About";
-import { UseNodeContext } from "../Address/NodeContext";
+import { UseNodeContext } from "../Address/GraphContext";
+
+import { Tabs, Tab } from "@nextui-org/react";
+import LoadGraph from "../ReacFlowGraph/LoadGraph";
 
 const Home = () => {
   const { ShowAddress, SetShowAddress } = UseNodeContext();
@@ -19,7 +22,7 @@ const Home = () => {
 
         <div className="rounded-xl row-start-4 row-span-3 col-span-3 lg:col-span-2 lg:row-start-1 lg:row-span-6 bg-base-200 shadow-xl my-4 mx-auto w-full p-4">
           <div id="graph-section" className="text-xl font-medium w-full h-full">
-            <FA2Graph />
+            <LoadGraph />
           </div>
         </div>
       </div>

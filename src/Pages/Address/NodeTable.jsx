@@ -4,21 +4,17 @@ import {
   NodeContext,
   NodeContextProvider,
   UseNodeContext,
-} from "../Address/NodeContext";
+} from "../Address/GraphContext";
 const NodeTable = () => {
   const { NodeID } = UseNodeContext();
   return (
     <div className="">
       <div className="text-base">Address Details</div>
       <div className="text-blue-700 font-bold text-2xl my-1 break-all">
-        {NodeID}
+        {NodeID[0]}
       </div>
       <div className="flex flex-wrap gap-2 mt-4">
-        <Chip color="primary">#tag1</Chip>
-        <Chip color="secondary">#tag2</Chip>
-        <Chip color="success">#tag3</Chip>
-        <Chip color="warning">#tag4</Chip>
-        <Chip color="danger">#tag5</Chip>
+        <Chip color="success">{NodeID[1]}</Chip>
       </div>
       <div class="divider"></div>
       <table className="table rounded-xl bg-base-100 w-full">

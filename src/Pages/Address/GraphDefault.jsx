@@ -10,6 +10,12 @@ import "@react-sigma/core/lib/react-sigma.min.css";
 import Graph from "graphology";
 import { random, uniqueId } from "lodash";
 import { truncateLabel } from "./truncateLabel";
+import axios from "axios";
+import {
+  NodeContext,
+  NodeContextProvider,
+  UseNodeContext,
+} from "../Address/GraphContext";
 const colorPalette = [
   "#3F2021", // DARK BROWN
   "#B04A5A", // DEEP CARMINE PINK
@@ -17,14 +23,6 @@ const colorPalette = [
   "#CB9576", // COPPER RUST
   "#7FA0AC", // BLUE GRAY
   "#EEE5D3", // ISABELLINE
-];
-const NodeIDRandom = [
-  "TWKeF4kETmaa6jHr3sX3bt2iRp9aitX9mJ", // DARK BROWN
-  "TF9V71Ki1mw7gbiZGs5Zhi1AwASsMqC6xm", // DEEP CARMINE PINK
-  "TV6MuMXfmLbBqPZvBHdwFsDnQeVfnmiuSi", // COPPER RUST
-  "TYASr5UV6HEcXatwdFQfmLVUqQQQMUxHLS", // COPPER RUST
-  "TQrY8tryqsYVCYS3MFbtffiPp2ccyn4STm", // BLUE GRAY
-  "TEZyqNsTSrEdwfqQSaBLYppYWSdVdNSqZ8", // ISABELLINE
 ];
 
 export const GraphDefault = () => {
@@ -34,37 +32,60 @@ export const GraphDefault = () => {
   const registerEvents = useRegisterEvents();
   const setSettings = useSetSettings();
   const [hoveredNode, setHoveredNode] = useState(null);
+  const [Nodes, SetNodeIDs] = useState([]);
+  const [UniqueTransactions, SetuniqueTransactions] = useState([]);
+  const { NodeID, SetNodeID } = UseNodeContext();
+  useEffect(() => {
+    const fetchNodesData = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/addresses");
+        const { response: addresses } = response.data;
+        SetNodeIDs(addresses);
+      } catch (error) {
+        console.error("Error fetching address data:", error);
+      }
+    };
+    fetchNodesData();
+  }, []);
+  useEffect(() => {
+    const fetchUniqueTransactionsData = async () => {
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/uniqueTransactions"
+        );
+        const { response: uniqueTransactions } = response.data;
+        SetuniqueTransactions(uniqueTransactions);
+      } catch (error) {
+        console.error("Error fetching address data:", error);
+      }
+    };
+    fetchUniqueTransactionsData();
+  }, []);
+
   useEffect(() => {
     const graph = new Graph();
     const order = 50;
-    const probability = 0.1;
-
     // Create the graph
     const nodeIds = []; // Store generated node IDs
 
-    for (let i = 0; i < order; i++) {
-      const node_id = uniqueId();
-      const random_label =
-        NodeIDRandom[Math.floor(Math.random() * colorPalette.length)];
-      graph.addNode(node_id, {
-        truncated_label: random_label,
-        label: truncateLabel(random_label),
-        size: 10,
+    for (let i = 0; i < Nodes.length; i++) {
+      //set default node
+      if (i === 0) SetNodeID([Nodes[i].addressId, Nodes[i].type]);
+      graph.addNode(Nodes[i].addressId, {
+        nodeType: Nodes[i].type,
+        truncated_label: Nodes[i].addressId,
+        label: truncateLabel(Nodes[i].addressId),
+        size: 15,
         color: colorPalette[Math.floor(Math.random() * colorPalette.length)],
         x: 0,
         y: 0,
       });
-      nodeIds.push(node_id);
-      // Store the generated node ID
     }
-
-    for (let i = 0; i < order; i++) {
-      for (let j = i + 1; j < order; j++) {
-        if (Math.random() < probability)
-          graph.addDirectedEdge(nodeIds[i], nodeIds[j]);
-        if (Math.random() < probability)
-          graph.addDirectedEdge(nodeIds[j], nodeIds[i]);
-      }
+    for (let i = 0; i < UniqueTransactions.length; i++) {
+      graph.addDirectedEdge(
+        UniqueTransactions[i].from,
+        UniqueTransactions[i].to
+      );
     }
     loadGraph(graph);
     assign();
@@ -72,7 +93,7 @@ export const GraphDefault = () => {
       enterNode: (event) => setHoveredNode(event.node),
       leaveNode: () => setHoveredNode(null),
     });
-  }, [assign, loadGraph, registerEvents]);
+  }, [assign, loadGraph, registerEvents, Nodes, UniqueTransactions]);
   useEffect(() => {
     setSettings({
       nodeReducer: (node, data) => {
@@ -88,7 +109,7 @@ export const GraphDefault = () => {
             newData.highlighted = true;
 
             newData.label = newData.truncated_label;
-            newData.size = 8;
+            newData.size = 18;
           } else {
             newData.color = "#E2E2E2";
             newData.highlighted = false;
