@@ -1,7 +1,7 @@
 import NodeTable from "../Address/NodeTable";
 import { FA2Graph } from "../Address/LoadGraph";
 import Search from "../../components/Search";
-import About from "../About/About";
+import Introduction from "../About/Introduction";
 import { UseNodeContext } from "../Address/GraphContext";
 
 import { Tabs, Tab } from "@nextui-org/react";
@@ -11,7 +11,7 @@ const Home = () => {
   const { ShowAddress, SetShowAddress } = UseNodeContext();
   return (
     <>
-      <About />
+      <Introduction />
       <Search />
       <div className="grid grid-rows-6 grid-cols-3 gap-x-4 gap-y-2 h-1200 lg:h-700">
         <div className="rounded-xl row-start-1 row-span-3 col-span-3 lg:col-span-1 lg:row-start-1 lg:row-span-6 bg-base-200 shadow-xl my-4 mx-auto w-full p-4">

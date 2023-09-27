@@ -33,7 +33,7 @@ const About = () => {
             </p>
 
             <ScrollLink to="graph-section" smooth={true} duration={800}>
-              <button className="btn btn-primary">Upgrade to Pro !</button>
+              <button className="btn btn-primary">Explore !</button>
             </ScrollLink>
           </div>
         </div>

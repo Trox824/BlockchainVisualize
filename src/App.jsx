@@ -2,7 +2,7 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Home from "./Pages/Home/Home";
 import { Route, Routes } from "react-router-dom";
-import About from "./Pages/About/About";
+import Introduction from "../src/Pages/About/Introduction";
 import { NodeContext, NodeContextProvider } from "./Pages/Address/GraphContext";
 const App = () => {
   return (
@@ -12,7 +12,7 @@ const App = () => {
         <Routes>
           <Route index element={<Home />}></Route>
           <Route path="/Home" element={<Home />}></Route>
-          <Route path="/About" element={<About />}></Route>
+          <Route path="/About" element={<Introduction />}></Route>
         </Routes>
 
         <Footer />

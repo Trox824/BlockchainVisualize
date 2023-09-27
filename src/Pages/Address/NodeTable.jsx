@@ -1,5 +1,7 @@
 import React from "react";
 import { Card, CardHeader, CardBody, Chip } from "@nextui-org/react";
+import { Link } from "@nextui-org/react";
+
 import {
   NodeContext,
   NodeContextProvider,
@@ -10,8 +12,10 @@ const NodeTable = () => {
   return (
     <div className="">
       <div className="text-base">Address Details</div>
-      <div className="text-blue-700 font-bold text-2xl my-1 break-all">
-        {NodeID[0]}
+      <div className="font-bold text-2xl my-1 break-all">
+        <Link className="font-bold text-xl my-1 break-all" href="#">
+          {NodeID[0]}
+        </Link>
       </div>
       <div className="flex flex-wrap gap-2 mt-4">
         <Chip color="success">{NodeID[1]}</Chip>
