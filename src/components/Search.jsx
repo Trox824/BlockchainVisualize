@@ -9,10 +9,14 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
+import {
+  NodeContext,
+  NodeContextProvider,
+  UseNodeContext,
+} from "../Pages/Address/GraphContext";
 const Search = () => {
   const [search, setSearch] = useState("");
-
+  const { NodeID, SetNodeID } = UseNodeContext();
   const [searchFocus, setSearchFocus] = useState(false);
 
   return (
@@ -27,9 +31,6 @@ const Search = () => {
           </SelectItem>
           <SelectItem key={2} value={1}>
             Transaction
-          </SelectItem>
-          <SelectItem key={3} value={1}>
-            NFT
           </SelectItem>
         </Select>
         <Input
