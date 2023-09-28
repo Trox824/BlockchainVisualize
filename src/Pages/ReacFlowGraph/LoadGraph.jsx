@@ -60,69 +60,39 @@ const useLayoutedElements = () => {
   return { getLayoutedElements };
 };
 
-// const nodeTypes = { CustomNode: CustomNode };
 const LayoutFlow = () => {
-  const [AllNodes, SetAllNode] = useState([]);
-  const [UniqueTransactions, SetuniqueTransactions] = useState([]);
-  const { NodeID, SetNodeID } = UseNodeContext();
+  const { AllNodes, UniqueTransactions } = UseNodeContext();
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedTab, setSelectedTab] = useState("vertical");
-  const { fitView } = useReactFlow();
   const nodeTypes = useMemo(() => ({ CustomNode: CustomNode }), []);
   const { getLayoutedElements } = useLayoutedElements();
-  const handleTabChange = (newSelected) => {
-    setSelectedTab(newSelected);
-    if (newSelected === "vertical") {
+
+  useEffect(() => {
+    if (selectedTab === "vertical") {
       getLayoutedElements({
         "elk.algorithm": "layered",
         "elk.direction": "DOWN",
       });
-    } else if (newSelected === "horizontal") {
+    } else if (selectedTab === "horizontal") {
       getLayoutedElements({
         "elk.algorithm": "layered",
         "elk.direction": "RIGHT",
       });
-    } else if (newSelected === "force") {
+    } else if (selectedTab === "force") {
       getLayoutedElements({
         "elk.algorithm": "org.eclipse.elk.force",
       });
     }
-    fitView; // Call the function immediately
-  };
-  useEffect(() => {
-    const fetchNodesData = async () => {
-      try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/addresses/" + NodeID[0]
-        );
-        const { response: addresses } = response.data;
-        SetAllNode(addresses);
-      } catch (error) {
-        console.error("Error fetching address data:", error);
-      }
-    };
-    fetchNodesData();
+  }, [selectedTab, setSelectedTab]);
 
-    const fetchUniqueTransactionsData = async () => {
-      try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/uniqueTransactions/" + NodeID[0]
-        );
-        const { response: uniqueTransactions } = response.data;
-        SetuniqueTransactions(uniqueTransactions);
-      } catch (error) {
-        console.error("Error fetching address data:", error);
-      }
-    };
-    fetchUniqueTransactionsData();
-  }, [NodeID]); // Added NodeID to the dependency array
   useEffect(() => {
     const initialNodes = generateInitialNodes(AllNodes);
     setNodes(initialNodes);
     const initialEdges = generateInitialEdges(UniqueTransactions);
     setEdges(initialEdges);
-  }, [AllNodes, UniqueTransactions, NodeID]);
+  }, [AllNodes, UniqueTransactions]);
+
   return (
     <div className="relative w-full h-full bg-white rounded-xl">
       <ReactFlow
@@ -135,13 +105,12 @@ const LayoutFlow = () => {
       >
         <Controls />
         <Panel position="top-right">
-          <Tabs value={selectedTab} onSelectionChange={handleTabChange}>
+          <Tabs value={selectedTab} onSelectionChange={setSelectedTab}>
             <Tab key="vertical" title="Vertical" />
             <Tab key="horizontal" title="Horizontal" />
             <Tab key="force" title="Force Layout" />
           </Tabs>
         </Panel>
-
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>
     </div>
