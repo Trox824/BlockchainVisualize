@@ -1,5 +1,4 @@
 import NodeTable from "../Address/NodeTable";
-import { FA2Graph } from "../Address/LoadGraph";
 import Search from "../../components/Search";
 import Introduction from "../About/Introduction";
 import { UseNodeContext } from "../Address/GraphContext";

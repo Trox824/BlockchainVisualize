@@ -20,7 +20,7 @@ const NodeTable = () => {
       <div className="flex flex-wrap gap-2 mt-4">
         <Chip color="success">{NodeID[1]}</Chip>
       </div>
-      <div class="divider"></div>
+      <div className="divider"></div>
       <table className="table rounded-xl bg-base-100 w-full">
         <tbody className="">
           <tr>
