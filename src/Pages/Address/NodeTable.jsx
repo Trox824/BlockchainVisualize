@@ -1,19 +1,21 @@
 import React from "react";
-import { Card, CardHeader, CardBody, Chip } from "@nextui-org/react";
-import { Link } from "@nextui-org/react";
+import { Chip } from "@nextui-org/react";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom to create links
+import { UseNodeContext } from "../Address/GraphContext";
 
-import {
-  NodeContext,
-  NodeContextProvider,
-  UseNodeContext,
-} from "../Address/GraphContext";
 const NodeTable = () => {
   const { NodeID } = UseNodeContext();
+  const { NodeTableData } = UseNodeContext();
+
   return (
     <div className="">
       <div className="text-base">Address Details</div>
       <div className="font-bold text-2xl my-1 break-all">
-        <Link className="font-bold text-xl my-1 break-all" href="#">
+        {/* Use Link component to create a link to the address page */}
+        <Link
+          className="font-bold text-xl my-1 break-all"
+          to={`/address/${NodeID[0]}`} // Specify the route parameter here
+        >
           {NodeID[0]}
         </Link>
       </div>
@@ -24,36 +26,43 @@ const NodeTable = () => {
       <table className="table rounded-xl bg-base-100 w-full">
         <tbody className="">
           <tr>
-            <th>To/From addresses</th>
-            <td className="text-right">7/123</td>
-          </tr>
-          <tr>
             <th>Current balance</th>
-            <td className="text-right">185 USDT</td>
+            <td className="text-right break-all">
+              {NodeTableData.current_balance} USDT
+            </td>
           </tr>
           <tr>
             <th>First txn time</th>
-            <td className="text-right">12/31/2021, 19:12:27</td>
+            <td className="text-right break-all">{NodeTableData.timestamp}</td>
           </tr>
           <tr>
             <th>Transactions</th>
-            <td className="text-right">1,129</td>
+            <td className="text-right break-all">
+              {NodeTableData.transactions}
+            </td>
           </tr>
           <tr>
             <th>Maximum txn amount</th>
-            <td className="text-right">330,000 USDT</td>
+            <td className="text-right break-all">
+              {NodeTableData.max_transaction_value} USDT
+            </td>
           </tr>
           <tr>
             <th>Total received</th>
-            <td className="text-right">4,794,991.1506 USDT</td>
+            <td className="text-right break-all">
+              {NodeTableData.total_received} USDT
+            </td>
           </tr>
           <tr>
             <th>Total sent</th>
-            <td className="text-right">4,794,806.1506 USDT</td>
+            <td className="text-right break-all">
+              {NodeTableData.total_sent} USDT
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
   );
 };
+
 export default NodeTable;

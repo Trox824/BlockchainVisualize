@@ -30,13 +30,15 @@ const NavBar = () => {
               <Link to="/Home">Homepage</Link>
             </li>
             <li>
-              <Link to="/About">About</Link>
+              <Link to="/Documentation">Documentation</Link>
             </li>
           </ul>
         </div>
       </div>
       <div className="navbar-center">
-        <a className="btn btn-ghost normal-case text-xl">Group 3-7</a>
+        <a className="btn btn-ghost normal-case text-xl">
+          <Link to="/Home">Blockchain Checker 69</Link>
+        </a>
       </div>
       <div className="navbar-end">{/* change theme */}</div>
     </div>

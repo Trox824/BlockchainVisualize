@@ -2,19 +2,23 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Home from "./Pages/Home/Home";
 import { Route, Routes } from "react-router-dom";
-import Introduction from "../src/Pages/About/Introduction";
+// import Documentation from "../src/Pages/About/Documentation";
 import { NodeContext, NodeContextProvider } from "./Pages/Address/GraphContext";
+import Address from "./Pages/Address/Address";
+import Txn from "./Pages/Address/Txn";
+import { useEffect } from "react";
 const App = () => {
   return (
     <NodeContextProvider>
-      <div className="container mx-auto ">
+      <div className="container mx-auto">
         <NavBar />
         <Routes>
-          <Route index element={<Home />}></Route>
-          <Route path="/Home" element={<Home />}></Route>
-          <Route path="/About" element={<Introduction />}></Route>
+          <Route index element={<Home />} />
+          <Route path="/Home" element={<Home />} />
+          {/* <Route path="/Documentation" element={<Documentation />} /> */}
+          <Route path="/Address/:address_id" element={<Address />} />
+          <Route path="/txn/:hash" element={<Txn />} />
         </Routes>
-
         <Footer />
       </div>
     </NodeContextProvider>

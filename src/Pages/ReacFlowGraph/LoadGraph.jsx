@@ -10,12 +10,17 @@ import ReactFlow, {
   useNodesState,
   useEdgesState,
   useReactFlow,
+  MiniMap,
   addEdge,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { truncateLabel } from "../Address/truncateLabel";
 import axios from "axios";
-import { UseNodeContext } from "../Address/GraphContext";
+import {
+  NodeContext,
+  NodeContextProvider,
+  UseNodeContext,
+} from "../Address/GraphContext";
 import { generateInitialNodes } from "./initialNodes"; // Import the initialNodes function
 import { generateInitialEdges } from "./initialEdges"; // Import the initialEdges function
 import CustomNode from "./CustomNode";
@@ -57,50 +62,22 @@ const useLayoutedElements = () => {
 };
 
 const LayoutFlow = () => {
-  const { AllNodes, UniqueTransactions, NodeID } = UseNodeContext();
+  const {
+    AllNodes,
+    UniqueTransactions,
+    NodeID,
+    SetNodeID,
+    EdgeID,
+    SetEdgeID,
+    SetShowAddress,
+  } = UseNodeContext();
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedTab, setSelectedTab] = useState("vertical");
   const nodeTypes = useMemo(() => ({ CustomNode: CustomNode }), []);
   const { getLayoutedElements } = useLayoutedElements();
 
-  const fetchNodesData = async () => {
-    try {
-      const response = await axios.get(
-        "http://127.0.0.1:8000/addresses/" + NodeID[0]
-      );
-      const { response: addresses } = response.data;
-      const initialNodes = generateInitialNodes(addresses);
-      setNodes(initialNodes);
-    } catch (error) {
-      console.error("Error fetching address data:", error);
-    }
-  };
-
-  const fetchUniqueTransactionsData = async () => {
-    try {
-      const response = await axios.get(
-        "http://127.0.0.1:8000/uniqueTransactions/" + NodeID[0]
-      );
-      const { response: uniqueTransactions } = response.data;
-      const initialEdges = generateInitialEdges(uniqueTransactions);
-      setEdges(initialEdges);
-    } catch (error) {
-      console.error("Error fetching address data:", error);
-    }
-  };
-
   useEffect(() => {
-    const loadData = async () => {
-      await fetchNodesData();
-      await fetchUniqueTransactionsData();
-      setSelectedTab("vertical");
-      updateLayoutConfig();
-    };
-    loadData();
-  }, []);
-
-  const updateLayoutConfig = () => {
     if (selectedTab === "vertical") {
       getLayoutedElements({
         "elk.algorithm": "layered",
@@ -116,12 +93,21 @@ const LayoutFlow = () => {
         "elk.algorithm": "org.eclipse.elk.force",
       });
     }
-  };
+  }, [selectedTab, setSelectedTab, NodeID]);
 
   useEffect(() => {
-    updateLayoutConfig();
-  }, [selectedTab]);
+    const initialNodes = generateInitialNodes(AllNodes);
+    setNodes(initialNodes);
+    const initialEdges = generateInitialEdges(UniqueTransactions);
+    setEdges(initialEdges);
+  }, [, UniqueTransactions]);
 
+  const handleEdgeClick = (event, edge) => {
+    SetEdgeID([edge.id, edge.source, edge.target]);
+
+    SetShowAddress(true);
+    // You can also perform any other actions related to edge clicks here
+  };
   return (
     <div className="relative w-full h-full bg-white rounded-xl">
       <ReactFlow
@@ -131,6 +117,7 @@ const LayoutFlow = () => {
         onEdgesChange={onEdgesChange}
         fitView
         nodeTypes={nodeTypes}
+        onEdgeClick={handleEdgeClick}
       >
         <Controls />
         <Panel position="top-right">
@@ -140,12 +127,12 @@ const LayoutFlow = () => {
             <Tab key="force" title="Force Layout" />
           </Tabs>
         </Panel>
+        <MiniMap />
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>
     </div>
   );
 };
-
 export const LoadGraph = () => {
   return (
     <ReactFlowProvider>

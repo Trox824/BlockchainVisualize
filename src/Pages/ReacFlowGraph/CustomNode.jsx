@@ -10,7 +10,7 @@ import {
   UseNodeContext,
 } from "../Address/GraphContext";
 const CustomNode = ({ data }) => {
-  const { NodeID, SetNodeID } = UseNodeContext();
+  const { NodeID, SetNodeID, SetShowAddress } = UseNodeContext();
   const [hover, setHover] = useState(false);
   let textcolor = null;
   if (data.type == "eoa") {
@@ -25,6 +25,7 @@ const CustomNode = ({ data }) => {
     <Button
       onClick={() => {
         SetNodeID([data.label, data.type]);
+        SetShowAddress(false);
       }}
       color={textcolor}
     >

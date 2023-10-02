@@ -7,26 +7,66 @@ import {
   Select,
   SelectItem,
 } from "@nextui-org/react";
-import { useState } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { UseNodeContext } from "../Pages/Address/GraphContext";
 
 const Search = () => {
-  const { AllNodes, UniqueTransactions, NodeID, SetNodeID } = UseNodeContext();
+  const { NodeID, SetNodeID, SetEdgeID, SetShowAddress } = UseNodeContext(); // Include SetNodeID
+  const [AllAddresses, SetAllAddresses] = useState([]);
+  const [AllTransactions, SetAllTransactions] = useState([]);
   const [search, setSearch] = useState("");
   const [searchFocus, setSearchFocus] = useState(false);
-  const [filterType, setFilterType] = useState("Address");
+
+  // Initialize the filterType state with the default value "Address"
+  const [filterType, setFilterType] = useState("1");
+
   const handleFilterChange = (value) => {
     setFilterType(value);
   };
+  useEffect(() => {
+    const fetchAllNodesData = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/addresses/All");
+        const { response: addresses } = response.data;
+        SetAllAddresses(addresses);
+      } catch (error) {
+        console.error("Error fetching address data:", error);
+      }
+    };
+    fetchAllNodesData();
+    const fetchAllTransactionsData = async () => {
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/Transactions/All"
+        );
+        const { response: Transactions } = response.data;
+        SetAllTransactions(Transactions);
+      } catch (error) {
+        console.error("Error fetching address data:", error);
+      }
+    };
+    fetchAllTransactionsData();
+  }, []);
+  let filteredResults = [];
+  if (filterType === "1") {
+    filteredResults = AllAddresses.filter((node) =>
+      node.addressId.includes(search)
+    );
+  } else if (filterType === "2") {
+    filteredResults = AllTransactions.filter((txn) =>
+      txn.hash.includes(search)
+    );
+  }
 
-  const filteredResults = AllNodes.filter((node) =>
-    node.addressId.includes(search)
-  );
-  // filterType === "Address"
-  //   ? AllNodes.filter((node) => node.label.includes(search))
-  //   : UniqueTransactions.filter((txn) => txn.label.includes(search));
-
+  useEffect(() => {
+    // Check if the user types "all" and set NodeID accordingly
+    if (search.toLowerCase() === "all") {
+      SetNodeID(["All", ""]);
+      SetEdgeID(["All", "", ""]);
+    }
+  }, [search, SetNodeID]);
   return (
     <div
       onFocus={() => setSearchFocus(true)}
@@ -37,9 +77,11 @@ const Search = () => {
           label="Filter"
           className="col-span-12 sm:col-span-4"
           size="md"
-          value={filterType}
+          textValue={filterType}
           onChange={(e) => handleFilterChange(e.target.value)}
+          defaultSelectedKeys={["1"]}
         >
+          {/* Set the default select option to "Address" */}
           <SelectItem key={1} value="Address">
             Address
           </SelectItem>
@@ -51,7 +93,7 @@ const Search = () => {
           size="md"
           className="col-span-12 sm:col-span-8"
           radius="md"
-          label={`Search Address/Txn`}
+          label={`Search Address/txn`}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -67,13 +109,31 @@ const Search = () => {
               {filteredResults.map((result, index) => (
                 <ListboxItem
                   key={index}
+                  textValue={
+                    filterType === "1" ? result.addressId : result.hash
+                  }
                   onClick={() => {
-                    SetNodeID([result.addressId, result.type]);
+                    if (filterType === "1") {
+                      SetNodeID([result.addressId, result.type]);
+                      SetShowAddress(false);
+                    } else if (filterType === "2") {
+                      SetEdgeID([
+                        result.hash,
+                        result.from_address,
+                        result.to_address,
+                      ]);
+
+                      SetShowAddress(true);
+                    }
                   }}
                 >
-                  <Link to={`/address/${result.addressId}`}>
-                    {result.addressId}
-                  </Link>
+                  {filterType === "1" ? (
+                    result.addressId
+                  ) : (
+                    <Link key={result.hash} href={`/txn/${result.hash}`}>
+                      {result.hash}
+                    </Link>
+                  )}
                 </ListboxItem>
               ))}
             </Listbox>
