@@ -22,10 +22,10 @@ const About = () => {
             className="scale-80 2xl:scale-150 max-w-sm 2xl:mr-16"
           />
           <div className="ml-1 xl:ml-10">
-            <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold">
+            <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold">
               Compliance analysis tools
             </h1>
-            <p className="py-6 text-lg">
+            <p className="py-6 pr-6 text-xs sm:text-sm md:text-lg">
               Easy-to-use yet powerful, compliance analysis tools make
               investigations hassle-free. The collection of tools support
               functions including one-click address mining, transaction graph

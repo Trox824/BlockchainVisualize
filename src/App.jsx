@@ -6,7 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import { NodeContext, NodeContextProvider } from "./Pages/Address/GraphContext";
 import Address from "./Pages/Address/Address";
 import Txn from "./Pages/Address/Txn";
-import { useEffect } from "react";
+import Documentation from "./Pages/About/Documentation";
 const App = () => {
   return (
     <NodeContextProvider>
@@ -15,9 +15,9 @@ const App = () => {
         <Routes>
           <Route index element={<Home />} />
           <Route path="/Home" element={<Home />} />
-          {/* <Route path="/Documentation" element={<Documentation />} /> */}
           <Route path="/Address/:address_id" element={<Address />} />
           <Route path="/txn/:hash" element={<Txn />} />
+          <Route path="/Documentation" element={<Documentation />} />
         </Routes>
         <Footer />
       </div>

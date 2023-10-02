@@ -8,7 +8,7 @@ import LoadGraph from "../ReacFlowGraph/LoadGraph";
 import EdgeTable from "../Address/EdgeTable";
 
 const Home = () => {
-  const { ShowAddress, SetShowAddress, NodeID, EdgeID, SetNodeID, SetEdgeID } =
+  const { ShowAddress, NodeID, EdgeID, SetNodeID, SetEdgeID } =
     UseNodeContext();
 
   // Set NodeID and EdgeID to their initial values when the component mounts
@@ -24,10 +24,16 @@ const Home = () => {
     <>
       <Introduction />
       <Search />
-      <div className="grid grid-rows-6 grid-cols-3 gap-x-4 gap-y-2 h-1200 lg:h-700">
+      <div
+        className={`grid ${
+          shouldHideNodeTable
+            ? " lg:grid-rows-3 h-700"
+            : " lg:grid-rows-6 h-1200" // Hide NodeTable when shouldHideNodeTable is true
+        } grid-cols-3 gap-x-4 gap-y-2 h-1200 lg:h-700`}
+      >
         <div
-          className={`rounded-xl row-start-1 row-span-3 col-span-3 lg:col-span-1 lg:row-start-1 lg:row-span-6 bg-base-200 shadow-xl my-4 mx-auto w-full p-4 ${
-            shouldHideNodeTable ? "hidden" : "" // Hide NodeTable when shouldHideNodeTable is true
+          className={`rounded-xl row-start-1 col-span-3 lg:col-span-1 lg:row-start-1 lg:row-span-6 bg-base-200 shadow-xl my-4 mx-auto w-full p-4 ${
+            shouldHideNodeTable ? " hidden" : " row-span-1" // Hide NodeTable when shouldHideNodeTable is true
           }`}
         >
           <div className="text-xl font-medium w-full">
@@ -36,8 +42,10 @@ const Home = () => {
         </div>
 
         <div
-          className={`rounded-xl row-start-4 row-span-3 col-span-3 ${
-            shouldHideNodeTable ? "lg:col-span-3" : "lg:col-span-2" // Hide NodeTable when shouldHideNodeTable is true
+          className={`rounded-xl  col-span-3 row-span-3${
+            shouldHideNodeTable
+              ? " row-start-1 lg:col-span-3"
+              : " row-start-2 lg:col-span-2" // Hide NodeTable when shouldHideNodeTable is true
           } lg:row-start-1 lg:row-span-6 bg-base-200 shadow-xl my-4 mx-auto w-full p-4`}
         >
           <div id="graph-section" className="text-xl font-medium w-full h-full">

@@ -127,7 +127,7 @@ const LayoutFlow = () => {
             <Tab key="force" title="Force Layout" />
           </Tabs>
         </Panel>
-        <MiniMap />
+
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>
     </div>

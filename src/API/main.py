@@ -1,20 +1,16 @@
-# Backend Script Example
-
+# main.py
 from fastapi import FastAPI
-from neo4j import GraphDatabase
 from fastapi.middleware.cors import CORSMiddleware
-
-import os
-from dotenv import load_dotenv
-
-uri = os.getenv("uri")
-user = os.getenv("user")
-password = os.getenv("password")
+from address import router as address_router
+from transaction import router as transaction_router
+from database import db
 
 app = FastAPI()
 
+app.include_router(address_router)
+app.include_router(transaction_router)
+# Add CORS middleware
 origins = ["*"]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -23,28 +19,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def connection():
-    driver = GraphDatabase.driver(uri, auth=(user, password))
-    return driver
+# Include routers
+app.include_router(address_router, prefix="/address", tags=["address"])
+app.include_router(transaction_router, prefix="/transaction", tags=["transaction"])
 
-def close(driver):
-     driver.close()
-
-@app.get("/")
-async def root():
-    return {"Response" : "This is the root path"}
-
-@app.get("/AllAddress")
-async def allAddress():
-    driver_neo4j = connection()
-    session = driver_neo4j.session()
-    q1 = """
-    MATCH (a:Address) RETURN properties(a) AS addressProperties
-    """
-    results = session.run(q1)
-    addresses = [record["addressProperties"] for record in results]
-    session.close()
-    close(driver_neo4j)  # Close the driver when done
-    return {"addresses": addresses}
-
-
+if __name__ == "__main__":
+    db.connect()
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
