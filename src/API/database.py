@@ -1,7 +1,7 @@
 # database.py
 from neo4j import GraphDatabase
 
-uri = "bolt://localhost:7687"
+uri = "neo4j+s://35af7441.databases.neo4j.io"
 user = "neo4j"
 password = "18092004"
 
