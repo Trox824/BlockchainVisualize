@@ -27,7 +27,7 @@ const Documentation = () => {
                   Run the following command to clone the repository:
                 </p>
                 <pre className="bg-base-200 rounded-xl shadow-xl p-2 p-2">
-                  git clone https://github.com/Trox824/BlockchainVisualize
+                  git clone https://github.com/Trox824/BlockchainVisualize.git
                 </pre>
               </li>
             </ol>
@@ -39,7 +39,8 @@ const Documentation = () => {
             </h3>
             <p className="py-2">
               Import the provided dataset into your Neo4j database using the
-              following query:
+              following query ( You can skip now because I already hosted the
+              database in neo4j aura):
             </p>
             <pre className="bg-base-200 rounded-xl shadow-xl p-2 p-2">
               {`LOAD CSV WITH HEADERS FROM 'file:///nodes.csv' AS row
